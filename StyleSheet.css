@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+#popsicles{
+	
+}
+
+img{
+	align-content: center;
+	-moz-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+	  pointer-events: none;
+}
+
+body{
+	background-color: #6ED8FF;
+	background-size: cover;
+}
+
+#alignBottom{
+
+}
+#popTopTh{
+	position: relative;
+	vertical-align: bottom;
+	z-index:9;
+}
+
+#popStick{
+
+}
+#myBtn{
+	  position: absolute;
+	height: 429px;
+	width: 206px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: transparent;
+  color: transparent;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#PopStickIn{
+		--hueStick: 2deg;
+	filter: hue-rotate(var(--hueStick));
+	  top: 60%;
+  left: 50%;
+	transform: translate(-16px);
+	position: absolute;
+	z-index:1;
+}
+
+#PopStick{
+	  top: 65%;
+  left: 50%;
+	transform: translate(-16px);
+	position: absolute;
+	z-index:-2;
+}
+#PopTop{
+	--hue: 2deg;
+	filter: hue-rotate(var(--hue));
+}
+
