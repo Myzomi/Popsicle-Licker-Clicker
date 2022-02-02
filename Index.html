@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<title>Posicle Licker Clicker</title>
+<link href="StyleSheet.css" rel="stylesheet" type="text/css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EZ7LKEC4DW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EZ7LKEC4DW');
+</script>
+	
+	
+</head> 
+
+<body onresize="resize()">	
+	
+	<p id="PopsiclesNumber">0000</p>
+
+	
+	<div id="PopsicleDiv">
+		
+		<table id="PopsicleTable" border="0px">
+			
+			<tr height="75%">
+				
+				<th id="PopsicleTh" width="100%">
+					<img src="Popsicle Top.png" onclick="clickFunction()" height="100%" alt="oh no" id="PopsicleTop">
+				</th>
+				
+			</tr>
+			
+			<tr height="25%">
+				
+				<th id="StickTh" width="100%">
+				<img src="Popsicle Stick.png" id="PopsicleStickIn" height="100%" alt="oh no" >
+				<img src="Popsicle Stick Bottom.png" id="PopsicleStick" height="100%" alt="oh no" >
+				</th>
+				
+			</tr>
+			
+		</table>
+	
+	</div>
+	
+    <script src="MainScript.js"> </script>
+	
+</body>
+</html>
