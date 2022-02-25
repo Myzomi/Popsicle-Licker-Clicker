@@ -1,1 +1,1 @@
-# Popsicle-Licker-Clicker
+# Popsicle Licker Clicker
