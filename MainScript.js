@@ -26,6 +26,8 @@ let debug = 0
 let CPS = 0
 
 
+
+
 setInterval(gameLoop, 16)
 
 
@@ -50,7 +52,7 @@ function resize()
 		//set width vars
 		width = 0.2 * window.innerHeight + "px"
 		stickWidth = 0.05 * window.innerHeight + "px"
-		upgradeButtonWidth = 0.28 * window.innerHeight + "px"
+		upgradeButtonWidth = 0.25 * window.innerHeight + "px"
 		menuButtonWidth = 0.35 * window.innerHeight + "px"
 		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
 		textWidth = 0.05 * window.innerHeight + "px"
@@ -58,7 +60,7 @@ function resize()
 		//set height vars
 		height = (heightMultiplier / 10) * 0.73 * window.innerHeight + "px"
 		stickHeight = 0.23 * window.innerHeight + "px"
-		upgradeButtonHeight = 0.1 * window.innerHeight + "px"
+		upgradeButtonHeight = 0.093 * window.innerHeight + "px"
 		menuButtonHeight = 0.05 * window.innerHeight + "px"
 		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
 		textHeight = 0.05 * window.innerHeight + "px"
@@ -68,7 +70,7 @@ function resize()
 		//set width vars
 		width = 0.2 * window.innerWidth + "px"
 		stickWidth = 0.05 * window.innerWidth + "px"
-		upgradeButtonWidth = 0.28 * window.innerWidth + "px"
+		upgradeButtonWidth = 0.25 * window.innerWidth + "px"
 		menuButtonWidth = 0.35 * window.innerWidth + "px"
 		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
 		textWidth = 0.05 * window.innerWidth + "px"
@@ -76,7 +78,7 @@ function resize()
 		//set height vars
 		height = (heightMultiplier / 10) * 0.73 * window.innerWidth + "px"
 		stickHeight = 0.23 * window.innerWidth + "px"
-		upgradeButtonHeight = 0.1 * window.innerWidth + "px"
+		upgradeButtonHeight = 0.093 * window.innerWidth + "px"
 		menuButtonHeight = 0.05 * window.innerWidth + "px"
 		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
 		textHeight = 0.05 * window.innerWidth + "px"
@@ -124,7 +126,7 @@ function clickFunction() {
 	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
-	document.getElementById("PopsiclesNumber").innerHTML = popsicleNumber + "$"
+	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
 	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
 
 	if ((Math.floor((TimesClicked) / 10) * pointsPerPopsicle) > levelUp) {
@@ -202,10 +204,14 @@ function upgradeCPS() {
 //void -> void
 function gameLoop()
 {
+	//set all cookies to their corrosponding variables
+	//setCookie("username", user, 30);
+
+	
 	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
-	document.getElementById("PopsiclesNumber").innerHTML = popsicleNumber + "$"
+	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
 	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
 
 	if ((Math.floor((TimesClicked) / 10) * pointsPerPopsicle) > levelUp) {

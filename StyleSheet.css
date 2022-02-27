@@ -1,8 +1,9 @@
 @charset "utf-8";
 /* CSS Document */
 .unSelectable{
-	-webkit-touch-callout: none;
-	user-drag: none;
+	  -webkit-touch-callout: none;
+    -moz-touch-callout: none;
+	  -moz-user-drag: none;
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -87,7 +88,8 @@
   background-color: transparent;
 	padding: 0px;
 	border-spacing: 0px;
-	background: #ffff81;
+	background: #ffffff;
+  border-style:solid;
 }
 
 #rightTable{
@@ -168,7 +170,7 @@
 }
 
 #BackgroundBottom{
-	background-image:url("Background.png"); 
+	background-image:url("Background.jpg"); 
 	background-repeat:repeat-x;
 	background-size: contain;
   margin: auto;
