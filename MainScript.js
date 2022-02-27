@@ -1,6 +1,7 @@
 //JavaScript Document
 //clicking
 let TimesClicked = 0
+//total amount of popsicles
 let popsicles = 0
 let heightMultiplier = 10
 let level = 5
@@ -9,13 +10,16 @@ let hue = 0
 let pointsPerPopsicle = 1
 let PPPUpgradeCost = 5
 let CPSUpgradeCost = 5
+//total amount of popsicles spent
 let popsiclesSpent = 0
 let popsicleNumber = 0
-let suns = 0
+let sun_amount = 0
 var showingUpgrades =  false
-document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
-document.getElementById("UpgradesDiv").style.visibility = "hidden"
 
+document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
+//both are hidden at the start
+document.getElementById("UpgradesDiv").style.visibility = "hidden"
+document.getElementById("Sun").style.visibility = "hidden"
 let debug = 0
 
 //CPS
@@ -48,7 +52,7 @@ function resize()
 		stickWidth = 0.05 * window.innerHeight + "px"
 		upgradeButtonWidth = 0.28 * window.innerHeight + "px"
 		menuButtonWidth = 0.35 * window.innerHeight + "px"
-		squareWidth = 0.2 * ((suns + 10) * 0.1) * window.innerHeight + "px"
+		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
 		textWidth = 0.05 * window.innerHeight + "px"
 		
 		//set height vars
@@ -56,7 +60,7 @@ function resize()
 		stickHeight = 0.23 * window.innerHeight + "px"
 		upgradeButtonHeight = 0.1 * window.innerHeight + "px"
 		menuButtonHeight = 0.05 * window.innerHeight + "px"
-		squareHeight = 0.2 * ((suns + 10) * 0.1) * window.innerHeight + "px"
+		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
 		textHeight = 0.05 * window.innerHeight + "px"
 	} 
 	else 
@@ -66,7 +70,7 @@ function resize()
 		stickWidth = 0.05 * window.innerWidth + "px"
 		upgradeButtonWidth = 0.28 * window.innerWidth + "px"
 		menuButtonWidth = 0.35 * window.innerWidth + "px"
-		squareWidth = 0.2 * ((suns + 10) * 0.1) * window.innerWidth + "px"
+		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
 		textWidth = 0.05 * window.innerWidth + "px"
 		
 		//set height vars
@@ -74,7 +78,7 @@ function resize()
 		stickHeight = 0.23 * window.innerWidth + "px"
 		upgradeButtonHeight = 0.1 * window.innerWidth + "px"
 		menuButtonHeight = 0.05 * window.innerWidth + "px"
-		squareHeight = 0.2 * ((suns + 10) * 0.1) * window.innerWidth + "px"
+		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
 		textHeight = 0.05 * window.innerWidth + "px"
 	}
 	//apply width vars
@@ -141,7 +145,8 @@ function clickFunction() {
 
 	resize()
 }
-
+//called when "bigger popsicle" has been upgraded. Increases points gained per popsicle
+//void -> void
 function upgradePPP()
 {
 	if (PPPUpgradeCost <= popsicles - popsiclesSpent)
@@ -156,19 +161,45 @@ function upgradePPP()
 
 document.addEventListener('contextmenu', event => event.preventDefault())
 
-//called when CPS button clicked
-function upgradeCPS(){
+//called by upgradeCPS to check if sun has been bought
+//void -> boolean
+//Example:
+//sun_amount = 1 -> return true
+//sun_amount = 0 -> return false
+function sun_switch () {
+	if(sun_amount >= 1) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+//called when sun is upgraded. Idly "melts" popsicle 
+//void -> void
+function upgradeCPS() {
+
 	if (CPSUpgradeCost <= popsicles - popsiclesSpent)
 	{
+		//hides sun if not bought
+		if (!sun_switch) {
+		document.getElementById("Sun").style.visibility = "hidden"
+		}
+		else {
+		document.getElementById("Sun").style.visibility = "visible"
+		}
+
 		CPS += 0.001
-	    suns += 1
+	    sun_amount += 1
 		popsiclesSpent += CPSUpgradeCost
 		CPSUpgradeCost = CPSUpgradeCost + Math.round(CPSUpgradeCost * 0.15)
 		levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
 	}
+
 }
 
-//called every frame
+//called every frame (60 fps)
+//void -> void
 function gameLoop()
 {
 	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
@@ -195,17 +226,10 @@ function gameLoop()
 
 	resize()
 	TimesClicked += CPS
-	
-	if(suns == 1 || suns > 1)
-	{
-		document.getElementById("Sun").style.visibility = "visible"
-	}
-	else
-	{
-		document.getElementById("Sun").style.visibility = "hidden"
-	}
 }
 
+//shows and hides the shop
+//void -> void
 function show(){
 	if (showingUpgrades == false)
 	{
