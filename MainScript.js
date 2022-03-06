@@ -7,24 +7,35 @@ let heightMultiplier = 10
 let level = 5
 let levelUp = 0
 let hue = 0
+
 let pointsPerPopsicle = 1
-let PPPUpgradeCost = 5
-let CPSUpgradeCost = 5
+//costs of each upgrade
+let popsicle_worth_cost = 5
+let sun_cost = 2
+let factory_cost = 15
 //total amount of popsicles spent
 let popsiclesSpent = 0
-let popsicleNumber = 0
+let popsicleNumber= 0
 let sun_amount = 0
 var showingUpgrades =  false
+
+//
+let idlenumber = 0
+let idle = 0
+let dogs = 0
+
+
+let debug = 0
+
+//CPs upticks the popsicle height every game loop (popsicles upticks 1 every time the popsicle height is zero)
+let CPS = 0
+//CPS2 upticks idle every game loop (idle number is rounded down to equal idle)
+let CPS2 = 0
 
 document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
 //both are hidden at the start
 document.getElementById("UpgradesDiv").style.visibility = "hidden"
 document.getElementById("Sun").style.visibility = "hidden"
-let debug = 0
-
-//CPS
-let CPS = 0
-
 
 setInterval(gameLoop, 16)
 
@@ -85,15 +96,15 @@ function resize()
 	document.getElementById("PopsicleTop").style.setProperty('--width', width)
 	document.getElementById("PopsicleStick").style.setProperty('--width', stickWidth)
 	document.getElementById("PopsicleStickIn").style.setProperty('--width', stickWidth)		
-	//document.getElementById("UpgradeCPS").style.setProperty('--width', upgradeButtonWidth)	
-	//document.getElementById("UpgradePPP").style.setProperty('--width', upgradeButtonWidth)	
+	//document.getElementById(").style.setProperty('--width', upgradeButtonWidth)	
+	//document.getElementById("popsicle_worth_upgrade").style.setProperty('--width', upgradeButtonWidth)	
 	
 	//apply height vars
 	document.getElementById("PopsicleTop").style.setProperty('--height', height)
 	document.getElementById("PopsicleStick").style.setProperty('--height', stickHeight)
 	document.getElementById("PopsicleStickIn").style.setProperty('--height', stickHeight)
-	//document.getElementById("UpgradeCPS").style.setProperty('--height', upgradeButtonHeight)	
-	//document.getElementById("UpgradePPP").style.setProperty('--height', upgradeButtonHeight)		
+	//document.getElementById("sun_upgrade").style.setProperty('--height', upgradeButtonHeight)	
+	//document.getElementById("popsicle_worth_upgrade^").style.setProperty('--height', upgradeButtonHeight)		
 	
 	const nodeListButtons = document.querySelectorAll(".button");
 	for (let i = 0; i < nodeListButtons.length; i++) 
@@ -123,7 +134,7 @@ function clickFunction() {
 
 	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
 	heightMultiplier = 10 - level
-	popsicleNumber = popsicles - popsiclesSpent
+	popsicleNumber = (idlenumber + popsicles) - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = popsicleNumber + "$"
 	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
 
@@ -147,14 +158,27 @@ function clickFunction() {
 }
 //called when "bigger popsicle" has been upgraded. Increases points gained per popsicle
 //void -> void
-function upgradePPP()
+function popsicle_worth_upgrade()
 {
-	if (PPPUpgradeCost <= popsicles - popsiclesSpent)
+	if (popsicle_gain <= (idlenumber + popsicles) - popsiclesSpent)
 	{
-		pointsPerPopsicle += 1
-		popsiclesSpent += PPPUpgradeCost
-		PPPUpgradeCost = PPPUpgradeCost + Math.round(PPPUpgradeCost * 0.15)
+		pointsPerPopsicle++
+		popsiclesSpent += popsicle_gain
+		popsicle_gain = popsicle_gain + Math.round(popsicle_gain * 0.15)
 		levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+	}
+
+}
+
+
+function factory_upgrade()
+{
+	if (factory_cost <= (idlenumber + popsicles) - popsiclesSpent)
+	{
+		CPS2 += 0.005555555
+		popsiclesSpent += factory_cost
+		factory_cost = Math.floor(factory_cost * 1.15)  
+		
 	}
 
 }
@@ -166,7 +190,7 @@ document.addEventListener('contextmenu', event => event.preventDefault())
 //Example:
 //sun_amount = 1 -> return true
 //sun_amount = 0 -> return false
-function sun_switch () {
+function is_sun_active () {
 	if(sun_amount >= 1) {
 		return true;
 	}
@@ -177,22 +201,22 @@ function sun_switch () {
 
 //called when sun is upgraded. Idly "melts" popsicle 
 //void -> void
-function upgradeCPS() {
+function sun_upgrade() {
 
-	if (CPSUpgradeCost <= popsicles - popsiclesSpent)
+	if (sun_cost <= (idlenumber + popsicles) - popsiclesSpent)
 	{
 		//hides sun if not bought
-		if (!sun_switch) {
+		if (!is_sun_active) {
 		document.getElementById("Sun").style.visibility = "hidden"
 		}
 		else {
 		document.getElementById("Sun").style.visibility = "visible"
 		}
 
-		CPS += 0.001
+		CPS += 0.0011111111111
 	    sun_amount += 1
-		popsiclesSpent += CPSUpgradeCost
-		CPSUpgradeCost = CPSUpgradeCost + Math.round(CPSUpgradeCost * 0.15)
+		popsiclesSpent += sun_cost
+		sun_cost = sun_cost + Math.round(sun_cost * 0.15)
 		levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
 	}
 
@@ -204,9 +228,12 @@ function gameLoop()
 {
 	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
 	heightMultiplier = 10 - level
-	popsicleNumber = popsicles - popsiclesSpent
+	popsicleNumber = (idlenumber + popsicles) - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = popsicleNumber + "$"
 	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
+	
+	idle += CPS2
+	idlenumber = Math.floor(idle)
 
 	if ((Math.floor((TimesClicked) / 10) * pointsPerPopsicle) > levelUp) {
 		hue = (hue + Math.random() * 360)
@@ -242,4 +269,4 @@ function show(){
 		showingUpgrades = false
 	}
 
-}
+} 

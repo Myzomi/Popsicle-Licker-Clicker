@@ -2,7 +2,6 @@
 /* CSS Document */
 .unSelectable{
 	-webkit-touch-callout: none;
-	user-drag: none;
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -10,7 +9,19 @@
     -ms-user-select: none;
 }
 
-#UpgradeCPS{
+#factory_upgrade{
+	--height: 200px;
+	--width: 100px;
+	width: var(--width);
+	height: var(--height);
+	  position: absolute;
+  left: 25%;
+  top: 25%;
+  transform: translate(0%, -100%);
+  z-index: 10;
+}
+
+#sun_upgrade{
 	--height: 200px;
 	--width: 100px;
 	width: var(--width);
@@ -122,14 +133,14 @@
 	filter: hue-rotate(var(--hue));
 }
 
-#UpgradeCPS{
+#sun_upgrade{
 	position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
-#UpgradePPP{
+#popsicle_worth_upgrade{
 		--height: 200px;
 	--width: 100px;
 	width: var(--width);
