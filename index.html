@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 	<title>Popsicle Licker Clicker</title>
-<link href="StyleSheet.css" rel="stylesheet" type="text/css">
+	<link rel="icon" type="image/x-icon" href="Favicon.png">
+	<link href="StyleSheet.css" rel="stylesheet" type="text/css">
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZ7LKEC4DW"></script>
@@ -17,17 +18,29 @@
 
 </head> 
 
-<body onresize="resize()">	
-<h1>Loading</h1>	
-	<div id="BackgroundBottom"></div>
+<body onresize="resize()"></body>>	
+<!--<h1>Loading</h1>	-->
+	<div id="BackgroundCenter"></div>
+	<div id="BackgroundLeft"></div>
+	<div id="BackgroundRight"></div>
 	<img onClick="show()" class="button unSelectable" src="ShopButton.png" alt="oh no">
 	
 	<div id="UpgradesDiv" class="unSelectable">
 		<table border="10px" bordercolor="#ffbaf3" id="UpgradesTable" class="unSelectable">
 			<tr>
 				<th>
+					<div id="PPPPriceDiv" class="priceDiv">
+						<p id="PPPPriceP" class="priceP">
+							$5 
+						</p>
+					</div>
 					<img src="PPP Button.png" class="button unSelectable" id="UpgradePPP" onclick="upgradePPP()">
-					<br>
+						<br>
+					<div id="CPSPriceDiv" class="priceDiv">
+						<p id="CPSPriceP" class="priceP">
+							$5 
+						</p>
+					</div>
 					<img class="button unSelectable" src="CPS Button.png" alt="oh no" id="UpgradeCPS" onclick="upgradeCPS()">
 				</th>
 			</tr>
@@ -57,6 +70,7 @@
 		<table border="0px" id="rightTable" class="unSelectable">
 			<tr height="100%">
 				<th>
+					<button onclick="clearSave()">Clear Save</button>
 					<p id="PopsiclesNumber" class="text">0</p>
 				</th>
 			</tr>
@@ -65,7 +79,7 @@
 	</div>
 	
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-    <script src="MainScript.js"> </script>
+    <script src="MainScript.js"></script>
 	
 </body>
 </html>

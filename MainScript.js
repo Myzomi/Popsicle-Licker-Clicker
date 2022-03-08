@@ -1,8 +1,8 @@
 //JavaScript Document
 //clicking
-let TimesClicked = 0
-//total amount of popsicles
-let popsicles = 0
+let Clicks = 0
+let AutoClicks = 0
+let AllClicks = 0
 let heightMultiplier = 10
 let level = 5
 let levelUp = 0
@@ -10,26 +10,17 @@ let hue = 0
 let pointsPerPopsicle = 1
 let PPPUpgradeCost = 5
 let CPSUpgradeCost = 5
+//total popsicles accumulated in all time
+let popsicles = 0
 //total amount of popsicles spent
 let popsiclesSpent = 0
+//total amount of popsicles
 let popsicleNumber = 0
 let sun_amount = 0
-var showingUpgrades =  false
-
-document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
-//both are hidden at the start
-document.getElementById("UpgradesDiv").style.visibility = "hidden"
-document.getElementById("Sun").style.visibility = "hidden"
-let debug = 0
+var showingUpgrades =  false	
 
 //CPS
 let CPS = 0
-
-
-
-
-setInterval(gameLoop, 16)
-
 
 //frame resize
 let width = 0.2 * window.innerHeight + "px"
@@ -44,102 +35,66 @@ let squareWidth = 0.05 * window.innerHeight + "px"
 let squareHeight = 0.05 * window.innerHeight + "px"
 let textWidth = 0.05 * window.innerHeight + "px"
 let textHeight = 0.05 * window.innerHeight + "px"
+let rightBackgroundPos = window.innerHeight + "px"
+let leftBackgroundPos = window.innerHeight + "px"
+let backgroundWidth = 1.7777 * window.innerHeight + "px"
+let backgroundHeight = window.innerHeight + "px"
+
+document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
+//both are hidden at the start
+document.getElementById("UpgradesDiv").style.visibility = "hidden"
+//document.getElementById("Sun").style.visibility = "hidden"
+
+//GameLoop
+setInterval(gameLoop, 16)
+let w = undefined;
+
+//start webworker
+w = new Worker("BackgroundLoop.js");	
+w.onmessage = function(event) {
+	AutoClicks = event.data;
+}
+
 
 function resize() 
 {
 	if (window.innerHeight < window.innerWidth) 
 	{
-		//set width vars
-		width = 0.2 * window.innerHeight + "px"
-		stickWidth = 0.05 * window.innerHeight + "px"
-		upgradeButtonWidth = 0.25 * window.innerHeight + "px"
-		menuButtonWidth = 0.35 * window.innerHeight + "px"
-		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
-		textWidth = 0.05 * window.innerHeight + "px"
-		
 		//set height vars
 		height = (heightMultiplier / 10) * 0.73 * window.innerHeight + "px"
-		stickHeight = 0.23 * window.innerHeight + "px"
-		upgradeButtonHeight = 0.093 * window.innerHeight + "px"
-		menuButtonHeight = 0.05 * window.innerHeight + "px"
-		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerHeight + "px"
-		textHeight = 0.05 * window.innerHeight + "px"
 	} 
 	else 
 	{
-		//set width vars
-		width = 0.2 * window.innerWidth + "px"
-		stickWidth = 0.05 * window.innerWidth + "px"
-		upgradeButtonWidth = 0.25 * window.innerWidth + "px"
-		menuButtonWidth = 0.35 * window.innerWidth + "px"
-		squareWidth = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
-		textWidth = 0.05 * window.innerWidth + "px"
-		
 		//set height vars
-		height = (heightMultiplier / 10) * 0.73 * window.innerWidth + "px"
-		stickHeight = 0.23 * window.innerWidth + "px"
-		upgradeButtonHeight = 0.093 * window.innerWidth + "px"
-		menuButtonHeight = 0.05 * window.innerWidth + "px"
-		squareHeight = 0.2 * ((sun_amount + 10) * 0.1) * window.innerWidth + "px"
-		textHeight = 0.05 * window.innerWidth + "px"
+		height = (heightMultiplier / 10) * 0.73 * window.innerHeight + "px"
 	}
 	//apply width vars
 	document.getElementById("PopsicleTop").style.setProperty('--width', width)
-	document.getElementById("PopsicleStick").style.setProperty('--width', stickWidth)
-	document.getElementById("PopsicleStickIn").style.setProperty('--width', stickWidth)		
-	//document.getElementById("UpgradeCPS").style.setProperty('--width', upgradeButtonWidth)	
-	//document.getElementById("UpgradePPP").style.setProperty('--width', upgradeButtonWidth)	
-	
+
 	//apply height vars
 	document.getElementById("PopsicleTop").style.setProperty('--height', height)
-	document.getElementById("PopsicleStick").style.setProperty('--height', stickHeight)
-	document.getElementById("PopsicleStickIn").style.setProperty('--height', stickHeight)
-	//document.getElementById("UpgradeCPS").style.setProperty('--height', upgradeButtonHeight)	
-	//document.getElementById("UpgradePPP").style.setProperty('--height', upgradeButtonHeight)		
-	
-	const nodeListButtons = document.querySelectorAll(".button");
-	for (let i = 0; i < nodeListButtons.length; i++) 
-	{
-  		nodeListButtons[i].style.setProperty('--height', upgradeButtonHeight)	
-		nodeListButtons[i].style.setProperty('--width', upgradeButtonWidth)
-	}
-
-	const nodeListSquares = document.querySelectorAll(".square");
-	for (let i = 0; i < nodeListSquares.length; i++) 
-	{
-  		nodeListSquares[i].style.setProperty('--height',squareWidth)	
-		nodeListSquares[i].style.setProperty('--width', squareHeight)
-	}
-	
-	const nodeListTexts = document.querySelectorAll(".text");
-	for (let i = 0; i < nodeListTexts.length; i++) 
-	{
-  		nodeListTexts[i].style.setProperty('--height', textHeight)	
-		nodeListTexts[i].style.setProperty('--width', textWidth)
-	}
 }
 
 //called when popsicle clicked
 function clickFunction() {
-	TimesClicked += 1
-
-	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
+	Clicks += 1
+	level = (AllClicks) - (Math.floor(((AllClicks)) / 10) * 10)
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
-	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
+	//popsicles = ((Math.floor(((AllClicks) + 1) / 10)) * 1)
 
-	if ((Math.floor((TimesClicked) / 10) * pointsPerPopsicle) > levelUp) {
+	if ((Math.floor((AllClicks) / 10) * pointsPerPopsicle) > levelUp) {
 		hue = (hue + Math.random() * 360)
 		document.getElementById("PopsicleTop").style.setProperty('--hue', hue + "deg")
 		document.getElementById("PopsicleStickIn").style.setProperty('--hueStick', hue + "deg")
 		if (popsicles <= 0)
 		{
-			levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+			levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 		}
 		else
 		{
-			levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+			levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 		}
 		
 		popsicles += pointsPerPopsicle
@@ -156,9 +111,9 @@ function upgradePPP()
 		pointsPerPopsicle += 1
 		popsiclesSpent += PPPUpgradeCost
 		PPPUpgradeCost = PPPUpgradeCost + Math.round(PPPUpgradeCost * 0.15)
-		levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 	}
-
+	
 }
 
 document.addEventListener('contextmenu', event => event.preventDefault())
@@ -184,18 +139,18 @@ function upgradeCPS() {
 	if (CPSUpgradeCost <= popsicles - popsiclesSpent)
 	{
 		//hides sun if not bought
-		if (!sun_switch) {
+		/*if (!sun_switch) {
 		document.getElementById("Sun").style.visibility = "hidden"
 		}
 		else {
 		document.getElementById("Sun").style.visibility = "visible"
-		}
+		}*/
 
 		CPS += 0.001
 	    sun_amount += 1
 		popsiclesSpent += CPSUpgradeCost
 		CPSUpgradeCost = CPSUpgradeCost + Math.round(CPSUpgradeCost * 0.15)
-		levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 	}
 
 }
@@ -204,34 +159,43 @@ function upgradeCPS() {
 //void -> void
 function gameLoop()
 {
-	//set all cookies to their corrosponding variables
-	//setCookie("username", user, 30);
-
-	
-	level = TimesClicked - (Math.floor((TimesClicked) / 10) * 10)
+	AllClicks = Clicks + AutoClicks
+	level = (AllClicks) - (Math.floor(((AllClicks)) / 10) * 10)
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
-	//popsicles = ((Math.floor((TimesClicked + 1) / 10)) * 1)
+	//popsicles = ((Math.floor(((AllClicks) + 1) / 10)) * 1)
+	document.getElementById("PopsicleTop").style.setProperty('--hue', hue + "deg")
+	document.getElementById("PopsicleStickIn").style.setProperty('--hueStick', hue + "deg")
 
-	if ((Math.floor((TimesClicked) / 10) * pointsPerPopsicle) > levelUp) {
+	if ((Math.floor(((AllClicks)) / 10) * pointsPerPopsicle) > levelUp) {
 		hue = (hue + Math.random() * 360)
 		document.getElementById("PopsicleTop").style.setProperty('--hue', hue + "deg")
 		document.getElementById("PopsicleStickIn").style.setProperty('--hueStick', hue + "deg")
 		if (popsicles <= 0)
 		{
-			levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+			levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 		}
 		else
 		{
-			levelUp = (Math.floor((TimesClicked) / 10) * pointsPerPopsicle)
+			levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 		}
-		
+
 		popsicles += pointsPerPopsicle
 	}
 
 	resize()
-	TimesClicked += CPS
+	saveGame()
+
+	w.onmessage = function(event) {
+		AutoClicks = event.data;
+	}
+
+	w.postMessage(CPS)
+	
+	//set the cost banners to the cost of each upgrade
+	document.getElementById("PPPPriceP").innerHTML = "$" + PPPUpgradeCost
+	document.getElementById("CPSPriceP").innerHTML = "$" + CPSUpgradeCost
 }
 
 //shows and hides the shop
@@ -249,3 +213,78 @@ function show(){
 	}
 
 }
+
+
+loadGame()
+
+function loadGame()
+{
+	var savedGame = JSON.parse(localStorage.getItem("gameSave"))
+	if (typeof savedGame.CPS !== "undefined"){CPS = savedGame.CPS}
+	if (typeof savedGame.Clicks !== "undefined"){Clicks = savedGame.Clicks}
+	if (typeof savedGame.AutoClicks !== "undefined"){AutoClicks = savedGame.AutoClicks}
+	if (typeof savedGame.AllClicks !== "undefined"){AllClicks = savedGame.AllClicks}
+	if (typeof savedGame.heightMultiplier !== "undefined"){heightMultiplier = savedGame.heightMultiplier}
+	if (typeof savedGame.level !== "undefined"){level = savedGame.level}
+	if (typeof savedGame.hue !== "undefined"){hue = savedGame.hue}
+	if (typeof savedGame.pointsPerPopsicle !== "undefined"){pointsPerPopsicle = savedGame.pointsPerPopsicle}
+	if (typeof savedGame.PPPUpgradeCost !== "undefined"){PPPUpgradeCost = savedGame.PPPUpgradeCost}
+	if (typeof savedGame.CPSUpgradeCost !== "undefined"){CPSUpgradeCost = savedGame.CPSUpgradeCost}
+	if (typeof savedGame.levelUp !== "undefined"){levelUp = savedGame.levelUp}
+	if (typeof savedGame.popsicles !== "undefined"){popsicles = savedGame.popsicles}
+	if (typeof savedGame.popsiclesSpent !== "undefined"){popsiclesSpent = savedGame.popsiclesSpent}
+	if (typeof savedGame.popsicleNumber !== "undefined"){popsicleNumber = savedGame.popsicleNumber}
+	if (typeof savedGame.sun_amount !== "undefined"){sun_amount = savedGame.sun_amount}
+	
+}
+
+function saveGame()
+{
+	var gameSave = 
+	{
+		Clicks: Clicks,
+		AutoClicks: AutoClicks,
+		AllClicks: AllClicks,
+		heightMultiplier: heightMultiplier,
+		level: level,
+		levelUp: levelUp,
+		CPS: CPS,
+		hue: hue,
+		pointsPerPopsicle: pointsPerPopsicle,
+		PPPUpgradeCost: PPPUpgradeCost,
+		CPSUpgradeCost: CPSUpgradeCost,
+		popsicles: popsicles,
+		popsiclesSpent: popsiclesSpent,
+		popsicleNumber: popsicleNumber,
+		sun_amount: sun_amount,
+	}
+	localStorage.setItem("gameSave", JSON.stringify(gameSave))
+}
+
+function clearSave(){
+	clearInterval(gameLoop)
+	Clicks = 0
+	AutoClicks = 0
+	AllClicks = 0
+	heightMultiplier = 10
+	level = 0
+	levelUp = 0
+	hue = 0
+	pointsPerPopsicle = 1
+	PPPUpgradeCost = 5
+	CPSUpgradeCost = 5
+	popsicles = 0
+	popsiclesSpent = 0
+	popsicleNumber = 0
+	sun_amount = 0
+	showingUpgrades =  false	
+	CPS = 0
+	saveGame()
+	setInterval(gameLoop, 16)
+}
+
+/*function stopWebWorker(){
+	gameLoop = setInterval(gameLoop, 16);
+	w.terminate();
+	w = undefined;
+} */
