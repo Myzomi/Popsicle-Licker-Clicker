@@ -50,11 +50,12 @@ setInterval(gameLoop, 16)
 let w = undefined;
 
 //start webworker
-w = new Worker("BackgroundLoop.js");	
+w = new Worker("BackgroundLoop.js");
+/*	
 w.onmessage = function(event) {
 	AutoClicks = event.data;
 }
-
+*/
 
 function resize() 
 {
@@ -191,7 +192,9 @@ function gameLoop()
 		AutoClicks = event.data;
 	}
 
-	w.postMessage(CPS)
+	w.postMessage({ 
+		CPS: CPS,  
+	})
 	
 	//set the cost banners to the cost of each upgrade
 	document.getElementById("PPPPriceP").innerHTML = "$" + PPPUpgradeCost
@@ -211,7 +214,6 @@ function show(){
 		document.getElementById("UpgradesDiv").style.visibility = "hidden"
 		showingUpgrades = false
 	}
-
 }
 
 
@@ -235,6 +237,10 @@ function loadGame()
 	if (typeof savedGame.popsiclesSpent !== "undefined"){popsiclesSpent = savedGame.popsiclesSpent}
 	if (typeof savedGame.popsicleNumber !== "undefined"){popsicleNumber = savedGame.popsicleNumber}
 	if (typeof savedGame.sun_amount !== "undefined"){sun_amount = savedGame.sun_amount}
+	w.postMessage({ 
+		CPS: CPS, 
+		i: AutoClicks 
+	})
 	
 }
 
@@ -263,6 +269,7 @@ function saveGame()
 
 function clearSave(){
 	clearInterval(gameLoop)
+	gameLoop = null
 	Clicks = 0
 	AutoClicks = 0
 	AllClicks = 0
@@ -280,6 +287,7 @@ function clearSave(){
 	showingUpgrades =  false	
 	CPS = 0
 	saveGame()
+	loadGame()
 	setInterval(gameLoop, 16)
 }
 
