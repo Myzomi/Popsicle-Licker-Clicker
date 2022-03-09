@@ -9,7 +9,7 @@ let levelUp = 0
 let hue = 0
 let pointsPerPopsicle = 1
 let PPPUpgradeCost = 5
-let CPSUpgradeCost = 5
+let CPSUpgradeCost = 3
 //total popsicles accumulated in all time
 let popsicles = 0
 //total amount of popsicles spent
@@ -147,10 +147,10 @@ function upgradeCPS() {
 		document.getElementById("Sun").style.visibility = "visible"
 		}*/
 
-		CPS += 0.001
+		CPS += 0.0011111111111
 	    sun_amount += 1
 		popsiclesSpent += CPSUpgradeCost
-		CPSUpgradeCost = CPSUpgradeCost + Math.round(CPSUpgradeCost * 0.15)
+		CPSUpgradeCost = Math.ceil(CPSUpgradeCost * 1.15)
 		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 	}
 
@@ -279,7 +279,7 @@ function clearSave(){
 	hue = 0
 	pointsPerPopsicle = 1
 	PPPUpgradeCost = 5
-	CPSUpgradeCost = 5
+	CPSUpgradeCost = 3
 	popsicles = 0
 	popsiclesSpent = 0
 	popsicleNumber = 0
