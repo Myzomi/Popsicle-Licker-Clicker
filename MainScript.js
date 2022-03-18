@@ -265,9 +265,12 @@ function saveGame()
 }
 
 function clearSave(){
+	//stop all loops
 	stopGameLoop()
 	stopWebWorker()
+	//clear old data
 	localStorage.clear();
+	//set vars to defualt
 	Clicks = 0
 	AutoClicks = 0
 	AllClicks = 0
@@ -284,8 +287,11 @@ function clearSave(){
 	sun_amount = 0
 	showingUpgrades =  false	
 	CPS = 0
+	//save new (defualt) values
+	saveGame()
+	//start all loops
 	startWebworker()
 	startGameLoop()
-	saveGame()
+	//load new (defualt) data
 	loadGame()
 }
