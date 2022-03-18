@@ -9,7 +9,9 @@ let level = 5
 let levelUp = 0
 let hue = 0
 let pointsPerPopsicle = 1
+//points per popsicle upgrade cost
 let PPPUpgradeCost = 15
+//clicks per second upgrade cost
 let CPSUpgradeCost = 2
 //total popsicles accumulated in all time
 let popsicles = 0
