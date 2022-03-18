@@ -2,6 +2,7 @@
 //clicking
 let Clicks = 0
 let AutoClicks = 0
+//autoclicks and clicks combined
 let AllClicks = 0
 let heightMultiplier = 10
 let level = 5
@@ -24,38 +25,45 @@ let CPS = 0
 
 //frame resize
 let width = 0.2 * window.innerHeight + "px"
-let stickWidth = 0.05 * window.innerHeight + "px"
-let upgradeButtonWidth = 1
 let height = (heightMultiplier / 10) * 0.73 * window.innerHeight + "px"
-let stickHeight = 0.23 * window.innerHeight + "px"
-let upgradeButtonHeight = 0.05 * window.innerHeight + "px"
-let menuButtonWidth = 0.05 * window.innerHeight + "px"
-let menuButtonHeight = 0.05 * window.innerHeight + "px"
-let squareWidth = 0.05 * window.innerHeight + "px"
-let squareHeight = 0.05 * window.innerHeight + "px"
-let textWidth = 0.05 * window.innerHeight + "px"
-let textHeight = 0.05 * window.innerHeight + "px"
-let rightBackgroundPos = window.innerHeight + "px"
-let leftBackgroundPos = window.innerHeight + "px"
-let backgroundWidth = 1.7777 * window.innerHeight + "px"
-let backgroundHeight = window.innerHeight + "px"
 
-document.getElementById("PopsiclesNumber").innerHTML = popsicles - popsiclesSpent
-//both are hidden at the start
-document.getElementById("UpgradesDiv").style.visibility = "hidden"
-//document.getElementById("Sun").style.visibility = "hidden"
+//game loop
+let l = undefined
 
-//GameLoop
-setInterval(gameLoop, 16)
-let w = undefined;
+//webworker var (background loop)
+var w;
 
-//start webworker
-w = new Worker("BackgroundLoop.js");
-/*	
-w.onmessage = function(event) {
-	AutoClicks = event.data;
+//runs game loop
+function startGameLoop(){
+	l = setInterval(gameLoop, 16)
 }
-*/
+
+//runs background loop
+function startWebworker(){
+	w = new Worker("BackgroundLoop.js");
+}
+
+//stops game loop
+function stopGameLoop(){
+	clearInterval(l)
+	l = null
+}
+
+//stops background loop
+function stopWebWorker(){
+	w.terminate();
+	w = undefined;
+}
+
+//start loops
+startGameLoop();
+startWebworker();
+
+//load saved data
+loadGame();
+
+//hide shop on start
+document.getElementById("UpgradesDiv").style.visibility = "hidden"
 
 function resize() 
 {
@@ -83,7 +91,6 @@ function clickFunction() {
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
-	//popsicles = ((Math.floor(((AllClicks) + 1) / 10)) * 1)
 
 	if ((Math.floor((AllClicks) / 10) * pointsPerPopsicle) > levelUp) {
 		hue = (hue + Math.random() * 360)
@@ -139,14 +146,6 @@ function upgradeCPS() {
 
 	if (CPSUpgradeCost <= popsicles - popsiclesSpent)
 	{
-		//hides sun if not bought
-		/*if (!sun_switch) {
-		document.getElementById("Sun").style.visibility = "hidden"
-		}
-		else {
-		document.getElementById("Sun").style.visibility = "visible"
-		}*/
-
 		CPS += 0.0011111111111
 	    sun_amount += 1
 		popsiclesSpent += CPSUpgradeCost
@@ -165,7 +164,6 @@ function gameLoop()
 	heightMultiplier = 10 - level
 	popsicleNumber = popsicles - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
-	//popsicles = ((Math.floor(((AllClicks) + 1) / 10)) * 1)
 	document.getElementById("PopsicleTop").style.setProperty('--hue', hue + "deg")
 	document.getElementById("PopsicleStickIn").style.setProperty('--hueStick', hue + "deg")
 
@@ -217,7 +215,7 @@ function show(){
 }
 
 
-loadGame()
+
 
 function loadGame()
 {
@@ -240,8 +238,7 @@ function loadGame()
 	w.postMessage({ 
 		CPS: CPS, 
 		i: AutoClicks 
-	})
-	
+	})	
 }
 
 function saveGame()
@@ -268,13 +265,14 @@ function saveGame()
 }
 
 function clearSave(){
-	clearInterval(gameLoop)
-	gameLoop = null
+	stopGameLoop()
+	stopWebWorker()
+	localStorage.clear();
 	Clicks = 0
 	AutoClicks = 0
 	AllClicks = 0
 	heightMultiplier = 10
-	level = 0
+	level = 5
 	levelUp = 0
 	hue = 0
 	pointsPerPopsicle = 1
@@ -286,13 +284,8 @@ function clearSave(){
 	sun_amount = 0
 	showingUpgrades =  false	
 	CPS = 0
+	startWebworker()
+	startGameLoop()
 	saveGame()
 	loadGame()
-	setInterval(gameLoop, 16)
 }
-
-/*function stopWebWorker(){
-	gameLoop = setInterval(gameLoop, 16);
-	w.terminate();
-	w = undefined;
-} */
