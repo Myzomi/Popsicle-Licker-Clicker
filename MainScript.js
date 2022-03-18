@@ -9,8 +9,8 @@ let level = 5
 let levelUp = 0
 let hue = 0
 let pointsPerPopsicle = 1
-let PPPUpgradeCost = 5
-let CPSUpgradeCost = 3
+let PPPUpgradeCost = 15
+let CPSUpgradeCost = 2
 //total popsicles accumulated in all time
 let popsicles = 0
 //total amount of popsicles spent
@@ -110,19 +110,6 @@ function clickFunction() {
 
 	resize()
 }
-//called when "bigger popsicle" has been upgraded. Increases points gained per popsicle
-//void -> void
-function upgradePPP()
-{
-	if (PPPUpgradeCost <= popsicles - popsiclesSpent)
-	{
-		pointsPerPopsicle += 1
-		popsiclesSpent += PPPUpgradeCost
-		PPPUpgradeCost = PPPUpgradeCost + Math.round(PPPUpgradeCost * 0.15)
-		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
-	}
-	
-}
 
 document.addEventListener('contextmenu', event => event.preventDefault())
 
@@ -146,13 +133,27 @@ function upgradeCPS() {
 
 	if (CPSUpgradeCost <= popsicles - popsiclesSpent)
 	{
-		CPS += 0.0011111111111
+		CPS += 0.00333333333334
 	    sun_amount += 1
 		popsiclesSpent += CPSUpgradeCost
 		CPSUpgradeCost = Math.ceil(CPSUpgradeCost * 1.15)
 		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
 	}
 
+}
+
+//called when "bigger popsicle" has been upgraded. Increases points gained per popsicle
+//void -> void
+function upgradePPP()
+{
+	if (PPPUpgradeCost <= popsicles - popsiclesSpent)
+	{
+		pointsPerPopsicle = pointsPerPopsicle * 2
+		popsiclesSpent += PPPUpgradeCost
+		PPPUpgradeCost = Math.ceil(Math.pow(PPPUpgradeCost, 1.45))
+		levelUp = (Math.floor(((AllClicks)) / 10) * pointsPerPopsicle)
+	}
+	
 }
 
 //called every frame (60 fps)
@@ -279,8 +280,8 @@ function clearSave(){
 	levelUp = 0
 	hue = 0
 	pointsPerPopsicle = 1
-	PPPUpgradeCost = 5
-	CPSUpgradeCost = 3
+	PPPUpgradeCost = 15
+	CPSUpgradeCost = 2
 	popsicles = 0
 	popsiclesSpent = 0
 	popsicleNumber = 0
