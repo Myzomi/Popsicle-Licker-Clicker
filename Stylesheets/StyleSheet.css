@@ -172,7 +172,7 @@
 
 #BackgroundLeft{
 	--posx: 0px;
-	background-image:url("../Images/BackgroundCenter.jpg"); 
+	background-image:url("../Images/Background.jpg"); 
 	background-repeat: repeat-x;
 	background-size: 360vh;
 	background-position: right;
@@ -193,7 +193,7 @@
 
 #BackgroundRight{
 	--posx: 0px;
-	background-image:url("../Images/BackgroundCenter.jpg"); 
+	background-image:url("../Images/Background.jpg"); 
 	background-repeat: repeat-x;
 	background-size: 360vh;
 	background-position: left;
