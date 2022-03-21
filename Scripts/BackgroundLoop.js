@@ -1,20 +1,33 @@
 //JavaScript Document
-let i = 0;
-let CPS = 0
-
-
+let SunClicks = 0;
+let SunCPS = 0
+let SeaGullCPS = 0
+let AllTowerClicksDecimal = 0
+let AllTowerClicks = 0
+let SeaGullLevel = 1
 
 onmessage = function(e) {
- CPS = e.data.CPS
-  if (e.data.i != undefined){
-    i = e.data.i
+ SunCPS = e.data.SunCPS
+ SeaGullCPS = e.data.SeaGullCPS
+  if (e.data.SunClicks != undefined){
+    SunClicks = e.data.SunClicks
+  }
+  if (e.data.AllTowerClicks != undefined){
+    AllTowerClicksDecimal = e.data.AllTowerClicks
+  }
+  if (e.data.SeaGullLevel != undefined){
+    SeaGullLevel = e.data.SeaGullLevel
   }
 }
 
-
 function timedCount() {
-  i += CPS;
-  postMessage(i);
+  SunClicks += SunCPS;
+  AllTowerClicksDecimal += SeaGullCPS * SeaGullLevel;
+  AllTowerClicks = Math.floor(AllTowerClicksDecimal / SeaGullLevel) * SeaGullLevel;
+  postMessage({ 
+		SunClicks: SunClicks,
+		AllTowerClicks: AllTowerClicks  
+	});
   setTimeout("timedCount()", 16);
 }
 
