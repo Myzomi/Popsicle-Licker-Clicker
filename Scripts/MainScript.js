@@ -222,7 +222,7 @@ function gameLoop()
 	popsicleNumber = (AllTowerClicks + popsicles) - popsiclesSpent
 	document.getElementById("PopsiclesNumber").innerHTML = "$" + popsicleNumber
 	document.getElementById("PopsicleTop").style.setProperty('--hue', hue + "deg")
-	document.getElementById("PopsicleTop").src="../Images/Popsicle Top " + Math.min(PopsicleLevel, maxPopsicleLevel) + ".png"
+	document.getElementById("PopsicleTop").src="/Images/Popsicle Top " + Math.min(PopsicleLevel, maxPopsicleLevel) + ".png"
 	document.getElementById("PopsicleStickIn").src="../Images/Popsicle Stick " + Math.min(PopsicleLevel, maxPopsicleLevel) + ".png"
 	document.getElementById("PopsicleStick").src="../Images/Popsicle Stick Bottom " + Math.min(PopsicleLevel, maxPopsicleLevel) + ".png"
 	document.getElementById("PopsicleStickIn").style.setProperty('--hueStick', hue + "deg")
