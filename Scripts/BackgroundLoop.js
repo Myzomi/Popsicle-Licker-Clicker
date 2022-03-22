@@ -22,6 +22,7 @@ onmessage = function(e) {
 
 function timedCount() {
   SunClicks += SunCPS;
+  //1                         0.1          2
   AllTowerClicksDecimal += SeaGullCPS * SeaGullLevel;
   AllTowerClicks = Math.floor(AllTowerClicksDecimal / SeaGullLevel) * SeaGullLevel;
   postMessage({ 
