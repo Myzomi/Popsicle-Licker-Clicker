@@ -20,7 +20,7 @@ let pointsPerPopsicle = 1
 let PopsicleUpgradeCost = 15
 //clicks per second upgrade cost
 let SunUpgradeCost = 2
-let SeaGullUpgradeCost = 7
+let SeaGullUpgradeCost = 8
 //total popsicles accumulated in all time
 let popsicles = 0
 //total amount of popsicles spent
@@ -207,7 +207,7 @@ function upgradeSeaGull()
 		SeaGulls += 1
 		SeaGullCPS += 0.0166666666667
 		popsiclesSpent += SeaGullUpgradeCost
-		SeaGullUpgradeCost = Math.ceil(1.15 * SeaGullUpgradeCost)
+		SeaGullUpgradeCost = Math.ceil(1.16 * SeaGullUpgradeCost)
 	}
 	
 }
@@ -391,7 +391,7 @@ function clearSave(){
 	pointsPerPopsicle = 1
 	PopsicleUpgradeCost = 15
 	SunUpgradeCost = 2
-	SeaGullUpgradeCost = 7
+	SeaGullUpgradeCost = 8
 	popsicles = 0
 	popsiclesSpent = 0
 	popsicleNumber = 0
