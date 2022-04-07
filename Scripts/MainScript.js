@@ -20,7 +20,7 @@ let pointsPerPopsicle = 1
 let PopsicleUpgradeCost = 15
 //clicks per second upgrade cost
 let SunUpgradeCost = 2
-let SeaGullUpgradeCost = 8
+let SeaGullUpgradeCost = 12
 //total popsicles accumulated in all time
 let popsicles = 0
 //total amount of popsicles spent
@@ -91,7 +91,7 @@ function resize()
 function popsiclePopup(){	
 	var img = document.createElement('img');
 	img.id = "popsiclePopup";
-    	img.src = "./Images/+.png";
+    img.src = "./Images/+.png";
 	img.classList.add("unSelectable");
 	img.classList.add("popsiclePopup");
 	img.style.position = "absolute";
@@ -391,7 +391,7 @@ function clearSave(){
 	pointsPerPopsicle = 1
 	PopsicleUpgradeCost = 15
 	SunUpgradeCost = 2
-	SeaGullUpgradeCost = 8
+	SeaGullUpgradeCost = 12
 	popsicles = 0
 	popsiclesSpent = 0
 	popsicleNumber = 0
