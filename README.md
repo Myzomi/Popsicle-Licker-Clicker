@@ -1,2 +1,2 @@
 # Popsicle Licker Clicker
-https://Myzomi.github.io/Popsicle-Licker-Clicker/
+https://myzomi.github.io/Popsicle-Licker-Clicker/
